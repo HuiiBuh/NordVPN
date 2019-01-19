@@ -1,1 +1,1 @@
-# NordVpnGUI
+# NordVPNGUI
