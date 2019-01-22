@@ -29,7 +29,7 @@ class ShellConnections:
 
         if self.connection_status():
             self.disconnect()
-
+#
         if not self.check_connection():
             subprocess.check_output(['nordvpn', 'connect'])
             if self.check_connection():
