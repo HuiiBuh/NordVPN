@@ -5,20 +5,20 @@ from Logger import Logger
 
 # ToDo Immer wenn man sich verbindet auch noch den Ort an den man sich verbindet hin schrieben
 # ToDo Exceptions hinzufügen
+# ToDo Geht Zeile 35 auch eleganter
 
 class ShellConnections:
 
     def __init__(self):
-        """Initializes the Loggers of the File"""
 
-        self.connection_status = None
+        #self.connection_status = None
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
-        self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "error.log", logging.ERROR, "Log")
+        self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log", logging.ERROR, "Log")
 
     def check_connection(self):
         """Used to check the connection status of the NordVPN client"""
 
-        self.connection_status = subprocess.check_output(['nordvpn', 'status']).decode("utf-8")
+        self.connection_status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8')
         if "Connected" in self.connection_status:
             return True
         else:
@@ -27,13 +27,13 @@ class ShellConnections:
     def fast_connect(self):
         """Connect to the best location available"""
 
-        if self.connection_status():
+        if self.check_connection():
             self.disconnect()
 #
         if not self.check_connection():
             subprocess.check_output(['nordvpn', 'connect'])
             if self.check_connection():
-                self.log.info("You are connected")
+                self.log.info("You are connected to " + self.status()[2] + "-" + self.status()[3])
                 return True
             else:
                 self.log.error("Could not fast connect")
@@ -52,7 +52,7 @@ class ShellConnections:
             self.disconnect()
 
         if not self.connection_status():
-            subprocess.check_output(['nordvpn', 'disconnect', str(country), str(city)])
+            subprocess.check_output(['nordvpn', 'disconnect', country, city])
             if self.connection_status:
                 self.log.info("You are connected to " + country + " " + city + " .")
                 return True
@@ -80,3 +80,26 @@ class ShellConnections:
         else:
             self.log.info("You tried to disconnect even though you are not connected to NordVPN")
             return True
+
+    def status(self):
+        status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8').replace('\r', '').replace('-', '')\
+            .replace('  ', '').split('\n')
+        status = [x for x in status if x != '']
+
+        return_status = []
+
+        for i in range(len(status)):
+            start = status[i].find(':') + 2
+            end = len(status[i])
+            return_status.append(status[i][start:end])
+
+        # 0 = connection status
+        # 1 = server
+        # 2 = country
+        # 3 = city
+        # 4 = IP
+        # 5 = protocol
+        # 6 = revived data
+        # 7 = send data
+        # 8 = duration of the connection
+        return return_status

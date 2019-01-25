@@ -5,7 +5,6 @@ import json
 from Logger import Logger
 
 # ToDo Soll jede Funktion prüfen, ob sie auch ausgeführt werden darf?
-# ToDo Land Stadt Zuordnung noch in Json Datei schreiben
 
 class ShellFunctions(Thread):
 
@@ -24,7 +23,7 @@ class ShellFunctions(Thread):
     def check_login(self):
         """Checks if you are connected to the NordVPN client"""
 
-        self.login_status = subprocess.check_output(['nordvpn', 'login']).decode("utf-8")
+        self.login_status = subprocess.check_output(['nordvpn', 'login']).decode('UTF-8')
         if "logged in" in self.login_status:
             self.log.info("You are logged in.")
             self.on_login(True)
@@ -35,7 +34,7 @@ class ShellFunctions(Thread):
     def check_countries(self):
         """Checks the countries that are available in the NordVPV client by reading the shell output"""
 
-        countries = subprocess.check_output(['nordvpn', 'countries']).decode("utf-8") \
+        countries = subprocess.check_output(['nordvpn', 'countries']).decode('UTF-8') \
             .replace('\t\t\t', '!').replace('\n', '!').replace('\t\t', '!').replace('\t', '!') \
             .replace('-', '').replace('\r', '').replace('\\', '').replace('|', '') \
             .replace(' ', '').replace('/', '').split('!')
@@ -52,7 +51,7 @@ class ShellFunctions(Thread):
             country_city[c] = []
 
         for country in country_city:
-            temp_cities = subprocess.check_output(['nordvpn', 'cities', country]).decode("utf-8") \
+            temp_cities = subprocess.check_output(['nordvpn', 'cities', country]).decode('UTF-8') \
                 .replace('\t\t', '!').replace('\t', '!').replace('\r', '').replace('|', '')\
                 .replace('-', '').replace(',', '').replace('\n', '').replace(' ', '') \
                 .replace('\\', '').replace('/', '').split('!')
@@ -69,5 +68,10 @@ class ShellFunctions(Thread):
         with open("cities.json", "w") as cities:
             cities.write(json.dumps(country_city))
 
+
+
+
         self.log.info("Working")
         return country_city
+
+

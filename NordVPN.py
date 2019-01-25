@@ -12,17 +12,16 @@ def on_login(login_status):
 
 if __name__ == "__main__":
 
-    """ 
     shell = ShellConnections()
     shell.fast_connect()
-    shell.check_connection()
-    shell.disconnect()
 
-    shell_functions = ShellFunctions(None)
-    countries = shell_functions.check_countries()
-    shell_functions.check_country_city(countries)
+    """ 
+      shell_functions = ShellFunctions(None)
+      countries = shell_functions.check_countries()
+      shell_functions.check_country_city(countries)
 
-    """
 
-    shell_settings = ShellSettings()
-    shell_settings.get_settings()
+
+      shell_settings = ShellSettings()
+      print(shell_settings.get_settings())
+      """
