@@ -1,30 +1,37 @@
 import eel
 import time
-from ShellConnection import ShellConnections
-from ShellFunctions import ShellFunctions
-from ShellSettings import ShellSettings
+from Connect import Connect
+from Functions import Functions
+from Settings import Settings
 
 eel.init('../NordVPNGUI')
 
-shellConnect = ShellConnections()
+connection = Connect()
 
 
 @eel.expose
 def get_connection_status():
-    return shellConnect.check_connection()
+    return connection.check()
+
 
 @eel.expose
 def get_status():
-    return shellConnect.status();
+    return connection.status()
+
 
 @eel.expose
 def quick_connect():
-    return shellConnect.quick_connect()
+    return connection.quick_connect()
+
+
+@eel.expose
+def connect_to_loaction():
+    return connection.connect_to_location()
 
 
 @eel.expose
 def disconnect():
-    return shellConnect.disconnect();
+    return connection.disconnect()
 
 
 eel.start('server.html')

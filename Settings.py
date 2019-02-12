@@ -5,9 +5,8 @@ import logging
 # ToDo Implement other settings than the change between UDP and TCP
 
 
-class ShellSettings:
+class Settings:
     def __init__(self):
-        self.connection_status = None
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "error.log", logging.ERROR, "Log")
 
@@ -28,7 +27,7 @@ class ShellSettings:
             self.error_logger.error(protocoltype + "is not a valid option. Only use UDP or TCP")
             return False
 
-    def get_settings(self):
+    def get(self):
         """Get the current settings of the NordVPN Client"""
 
         # 0 = Protocol --> UDP == True

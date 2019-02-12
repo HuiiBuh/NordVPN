@@ -1,5 +1,4 @@
 import subprocess
-from threading import Thread
 import logging
 import json
 from Logger import Logger
@@ -7,19 +6,11 @@ from Logger import Logger
 # ToDo Soll jede Funktion prüfen, ob sie auch ausgeführt werden darf?
 
 
-class ShellFunctions(Thread):
+class Functions():
 
-    def __init__(self, on_login):
-        Thread.__init__(self)
-        self.on_login = on_login
-        self.login_status = None
-
-        self.connection_status = None
+    def __init__(self):
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "error.log", logging.ERROR, "Log")
-
-    def run(self):
-        self.check_login()
 
     def check_login(self):
         """Checks if you are connected to the NordVPN client"""

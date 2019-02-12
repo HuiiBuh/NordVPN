@@ -6,14 +6,14 @@ from Logger import Logger
 # ToDo Exceptions hinzufügen
 # TODo TimeOuts einfügen
 
-class ShellConnections:
+class Connect:
 
     def __init__(self):
 
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log", logging.ERROR, "Log")
 
-    def check_connection(self):
+    def check(self):
         """Used to check the connection status of the NordVPN client"""
 
         connection_status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8')
@@ -25,12 +25,12 @@ class ShellConnections:
     def quick_connect(self):
         """Connect to the best location available"""
 
-        if self.check_connection():
+        if self.check():
             self.disconnect()
 #
-        if not self.check_connection():
+        if not self.check():
             subprocess.check_output(['nordvpn', 'connect'])
-            if self.check_connection():
+            if self.check():
                 nordvpn_status = self.status()
                 self.log.info("You are connected to " + nordvpn_status[2] + "-" + nordvpn_status[3])
                 return True
@@ -47,12 +47,12 @@ class ShellConnections:
         """Connects to a specific location.
         Assign "" (empty string) to City if you want to connect only to the country"""
 
-        if self.check_connection():
+        if self.check():
             self.disconnect()
 
-        if not self.check_connection():
+        if not self.check():
             subprocess.check_output(['nordvpn', 'connect', country, city])
-            if self.check_connection():
+            if self.check():
                 self.log.info("You are connected to " + country + " " + city + " .")
                 return True
             else:
@@ -69,9 +69,9 @@ class ShellConnections:
     def disconnect(self):
         """Disconnects form the NordVPN Client"""
 
-        if self.check_connection():
+        if self.check():
             subprocess.check_output(['nordvpn', 'disconnect'])
-            if not self.check_connection():
+            if not self.check():
                 self.log.info("You are disconnected")
                 return True
             else:
