@@ -1,27 +1,30 @@
+import eel
+import time
 from ShellConnection import ShellConnections
 from ShellFunctions import ShellFunctions
 from ShellSettings import ShellSettings
 
-def on_connection(connection_status):
-    print(connection_status)
+eel.init('../NordVPNGUI')
+
+shellConnect = ShellConnections()
 
 
-def on_login(login_status):
-    print(login_status)
+@eel.expose
+def get_connection_status():
+    return shellConnect.check_connection()
+
+@eel.expose
+def get_status():
+    return shellConnect.status();
+
+@eel.expose
+def quick_connect():
+    return shellConnect.quick_connect()
 
 
-if __name__ == "__main__":
-
-    shell = ShellConnections()
-    shell.fast_connect()
-
-    """ 
-      shell_functions = ShellFunctions(None)
-      countries = shell_functions.check_countries()
-      shell_functions.check_country_city(countries)
+@eel.expose
+def disconnect():
+    return shellConnect.disconnect();
 
 
-
-      shell_settings = ShellSettings()
-      print(shell_settings.get_settings())
-      """
+eel.start('server.html')

@@ -6,6 +6,7 @@ from Logger import Logger
 
 # ToDo Soll jede Funktion prüfen, ob sie auch ausgeführt werden darf?
 
+
 class ShellFunctions(Thread):
 
     def __init__(self, on_login):
@@ -68,10 +69,5 @@ class ShellFunctions(Thread):
         with open("cities.json", "w") as cities:
             cities.write(json.dumps(country_city))
 
-
-
-
         self.log.info("Working")
         return country_city
-
-

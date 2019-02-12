@@ -4,14 +4,14 @@ import logging
 
 # ToDo Implement other settings than the change between UDP and TCP
 
+
 class ShellSettings:
     def __init__(self):
         self.connection_status = None
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "error.log", logging.ERROR, "Log")
 
-
-    def UTF_or_TCP(self, protocoltype):
+    def udp_or_tcp(self, protocoltype):
         """Set the Protocol either to UDP or TCP"""
         if protocoltype == "UDP" or protocoltype == "TCP":
             protocol = subprocess.check_output(['nordvpn set protocol', protocoltype])
