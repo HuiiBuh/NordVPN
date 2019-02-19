@@ -4,6 +4,8 @@ import json
 from Logger import Logger
 
 # ToDo Soll jede Funktion prüfen, ob sie auch ausgeführt werden darf?
+# ToDo Die Länder JSON und die StadtLand JSON müssen alle 1h erneuert werden und dann soll eine JS Funktion aufgerufen
+#  werden die die Länder aktualisiert
 
 
 class Functions():
