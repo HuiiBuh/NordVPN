@@ -3,6 +3,7 @@ import threading
 import time
 from Connect import Connect
 
+# ToDo schön das Programm beenden
 
 class ConnectionButton (threading.Thread):
 

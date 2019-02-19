@@ -1,5 +1,3 @@
-#ToDo Auch die Länder müssen in einer JSON Datei gespeichert werden
-
 import eel
 from Connect import Connect
 
@@ -10,21 +8,17 @@ from connectButton import ConnectionButton
 
 eel.init('../NordVPNGUI')
 
+# update quickconnect button
+updateButton = ConnectionButton()
+updateButton.start()
 
-thead = ConnectionButton()
-thead.start()
-
-temp = Functions()
-a = temp.check_countries()
-
-temp.check_country_city(a)
-
-
-with open("cities.json", "r") as f:
-    print(f.read())
+# update the json file every 30 minutes
+updateJson = Functions()
+updateJson.start()
 
 
 nordvpn = Connect()
+
 
 @eel.expose
 def get_connection_status():
@@ -49,5 +43,18 @@ def connect_to_location(country, city):
 @eel.expose
 def disconnect():
     return nordvpn.disconnect()
+
+
+@eel.expose
+def return_countries():
+    with open("country.json", "r") as country:
+        return country.read()
+
+
+@eel.expose
+def return_cities():
+    with open("cities.json", "r") as citiy:
+        return citiy.read()
+
 
 eel.start('server.html')

@@ -13,6 +13,18 @@ class Connect:
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log", logging.ERROR, "Log")
 
+    def check_login(self):
+        """Checks if you are connected to the NordVPN client"""
+
+        self.login_status = subprocess.check_output(['nordvpn', 'login']).decode('UTF-8')
+        if "logged in" in self.login_status:
+            self.log.info("You are logged in.")
+            self.on_login(True)
+        else:
+            self.log.info("You are not logged in.")
+            self.on_login(False)
+
+
     def check(self):
         """Used to check the connection status of the NordVPN client"""
 
