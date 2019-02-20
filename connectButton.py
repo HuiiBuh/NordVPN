@@ -11,12 +11,13 @@ class ConnectionButton (threading.Thread):
         threading.Thread.__init__(self)
         self.interrupt = False
         self.connect = Connect()
+        self.stop = False
 
     def run(self):
         self.get_statue_of_connection()
 
     def get_statue_of_connection(self):
-        while True:
+        while not self.stop:
             if not self.interrupt:
                 detailed_state = self.connect.status()
                 state = self.connect.check()
@@ -24,3 +25,4 @@ class ConnectionButton (threading.Thread):
                 time.sleep(1)
             else:
                 pass
+        print("button")

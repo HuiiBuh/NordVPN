@@ -8,6 +8,7 @@ from connectButton import ConnectionButton
 
 eel.init('../NordVPNGUI')
 
+
 # update quickconnect button
 updateButton = ConnectionButton()
 updateButton.start()
@@ -56,5 +57,12 @@ def return_cities():
     with open("cities.json", "r") as citiy:
         return citiy.read()
 
+print("df")
 
-eel.start('server.html')
+
+def on_close(_,__):
+    updateJson.stop = True
+    updateButton.stop = True
+
+
+eel.start('server.html', callback=on_close)
