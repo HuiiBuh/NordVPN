@@ -37,7 +37,6 @@ def quick_connect():
 
 @eel.expose
 def connect_to_location(country, city):
-
     return nordvpn.connect_to_location(country, city)
 
 
@@ -61,4 +60,4 @@ def return_cities():
 if which("chromium"):
     eel.start('server.html')
 else:
-    eel.start('server.html', options={'mode': 'default','host': 'localhost','port': 8000,'chromeFlags': ""})
+    eel.start('server.html', options={'mode': 'default', 'host': 'localhost', 'port': 8000, 'chromeFlags': ""})

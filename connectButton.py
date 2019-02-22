@@ -3,10 +3,8 @@ import threading
 import time
 from Connect import Connect
 
-# ToDo schön das Programm beenden
 
-
-class ConnectionButton (threading.Thread):
+class ConnectionButton(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -23,5 +21,6 @@ class ConnectionButton (threading.Thread):
                 state = self.connect.check()
                 eel.updateStatus(detailed_state, state)
                 time.sleep(1)
+                print("d")
             else:
                 pass

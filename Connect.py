@@ -24,7 +24,6 @@ class Connect:
             self.log.info("You are not logged in.")
             self.on_login(False)
 
-
     def check(self):
         """Used to check the connection status of the NordVPN client"""
 
@@ -39,7 +38,7 @@ class Connect:
 
         if self.check():
             self.disconnect()
-#
+
         if not self.check():
             subprocess.check_output(['nordvpn', 'connect'])
             if self.check():
@@ -95,7 +94,7 @@ class Connect:
             return True
 
     def status(self):
-        status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8').replace('\r', '').replace('-', '')\
+        status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8').replace('\r', '').replace('-', '') \
             .replace('  ', '').split('\n')
         status = [x for x in status if x != '']
 

@@ -5,6 +5,7 @@ import threading
 import time
 from Logger import Logger
 
+
 # ToDo Die cities in dem cieties dict sortieren
 
 
@@ -19,16 +20,14 @@ class Functions(threading.Thread):
         self.execute()
 
     def execute(self):
-        time_st_old = 0
-        time.sleep(30*60)
+
+        time_st_old = time.time()
         while threading.main_thread().is_alive():
             time.sleep(2)
-            if time.time() - time_st_old > 30*60:
+            if time.time() - time_st_old > 30 * 60:
                 temp = self.check_countries()
                 self.check_country_city(temp)
                 time_st_old = time.time()
-
-        print("json")
 
     def check_countries(self):
         """Checks the countries that are available in the NordVPV client by reading the shell output"""
@@ -58,7 +57,7 @@ class Functions(threading.Thread):
 
         for country in country_city:
             temp_cities = subprocess.check_output(['nordvpn', 'cities', country]).decode('UTF-8') \
-                .replace('\t\t', '!').replace('\t', '!').replace('\r', '').replace('|', '')\
+                .replace('\t\t', '!').replace('\t', '!').replace('\r', '').replace('|', '') \
                 .replace('-', '').replace(',', '').replace('\n', '').replace(' ', '') \
                 .replace('\\', '').replace('/', '').split('!')
             cities = []
