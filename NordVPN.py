@@ -1,4 +1,5 @@
 import eel
+from shutil import which
 from Connect import Connect
 
 import time
@@ -8,7 +9,6 @@ from connectButton import ConnectionButton
 
 eel.init('../NordVPNGUI')
 
-
 # update quickconnect button
 updateButton = ConnectionButton()
 updateButton.start()
@@ -16,7 +16,6 @@ updateButton.start()
 # update the json file every 30 minutes
 updateJson = Functions()
 updateJson.start()
-
 
 nordvpn = Connect()
 
@@ -38,6 +37,7 @@ def quick_connect():
 
 @eel.expose
 def connect_to_location(country, city):
+
     return nordvpn.connect_to_location(country, city)
 
 
@@ -57,12 +57,8 @@ def return_cities():
     with open("cities.json", "r") as citiy:
         return citiy.read()
 
-print("df")
 
-
-def on_close(_,__):
-    updateJson.stop = True
-    updateButton.stop = True
-
-
-eel.start('server.html', callback=on_close)
+if which("chromium"):
+    eel.start('server.html')
+else:
+    eel.start('server.html', options={'mode': 'default','host': 'localhost','port': 8000,'chromeFlags': ""})

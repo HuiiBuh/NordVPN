@@ -14,22 +14,21 @@ class Functions(threading.Thread):
         threading.Thread.__init__(self)
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "error.log", logging.ERROR, "Log")
-        self.stop = False
 
     def run(self):
         self.execute()
 
     def execute(self):
-        timeStOld = 0;
-        while not self.stop:
+        time_st_old = 0
+        time.sleep(30*60)
+        while threading.main_thread().is_alive():
             time.sleep(2)
-            if time.time() - timeStOld > 30*60:
+            if time.time() - time_st_old > 30*60:
                 temp = self.check_countries()
-                self.check_country_city(temp);
-                timeStOld = time.time()
+                self.check_country_city(temp)
+                time_st_old = time.time()
 
         print("json")
-
 
     def check_countries(self):
         """Checks the countries that are available in the NordVPV client by reading the shell output"""
