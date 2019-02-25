@@ -4,7 +4,6 @@ from Logger import Logger
 
 
 # ToDo Exceptions hinzufügen
-# TODo TimeOuts einfügen
 
 class Connect:
 
@@ -13,11 +12,12 @@ class Connect:
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
         self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log", logging.ERROR, "Log")
         self.connecting = False
+        self.disconnecting = False
 
     def check_login(self):
         """Checks if you are connected to the NordVPN client"""
 
-        self.login_status = subprocess.check_output(['nordvpn', 'login']).decode('UTF-8')
+        login_status = subprocess.check_output(['nordvpn', 'login']).decode('UTF-8')
         if "logged in" in self.login_status:
             self.log.info("You are logged in.")
             self.on_login(True)
@@ -36,77 +36,75 @@ class Connect:
 
     def quick_connect(self):
         """Connect to the best location available"""
-        if not self.connecting:
-            self.connecting = True;
-            if self.check():
-                self.disconnect()
 
-            if not self.check():
-                subprocess.check_output(['nordvpn', 'connect'])
-                if self.check():
-                    nordvpn_status = self.status()
-                    self.log.info("You are connected to " + nordvpn_status[2] + "-" + nordvpn_status[3])
-                    self.connecting = False
-                    return True
-                else:
-                    self.log.error("Could not fast connect")
-                    self.error_logger.error("Could not fast connect")
-                    self.connecting = False
-                    return False
+        self.connecting = True;
+        if self.check():
+            self.disconnect()
+
+        if not self.check():
+            subprocess.check_output(['nordvpn', 'connect'])
+            if self.check():
+                nordvpn_status = self.status()
+                self.log.info("You are connected to " + nordvpn_status[2] + "-" + nordvpn_status[3])
+                self.connecting = False
+                return True
             else:
                 self.log.error("Could not fast connect")
                 self.error_logger.error("Could not fast connect")
                 self.connecting = False
                 return False
+        else:
+            self.log.error("Could not fast connect")
+            self.error_logger.error("Could not fast connect")
+            self.connecting = False
+            return False
 
 
     def connect_to_location(self, country, city):
         """Connects to a specific location.
         Assign "" (empty string) to City if you want to connect only to the country"""
 
-        if not self.connecting:
-            self.connecting = True;
-            if self.check():
-                self.disconnect()
+        self.connecting = True
+        if self.check():
+            self.disconnect()
 
-            if not self.check():
-                subprocess.check_output(['nordvpn', 'connect', country, city])
-                if self.check():
-                    self.log.info("You are connected to " + country + " " + city + " .")
-                    self.connecting = False
-                    return True
-                else:
-                    self.log.error("Could not connect to " + country + " " + city + " .")
-                    self.error_logger.error("Could not connect to " + country + " " + city + " .")
-                    self.connecting = False
-                    return False
+        if not self.check():
+            subprocess.check_output(['nordvpn', 'connect', country, city])
+            if self.check():
+                self.log.info("You are connected to " + country + " " + city + " .")
+                self.connecting = False
+                return True
             else:
-                self.log.error("Could not connect to " + country + " " + city + " , because you were not disconnected.")
-                self.error_logger.error("Could not connect to " + country + " " + city + " ,because you were not "
-                                                                                       "disconnected.")
+                self.log.error("Could not connect to " + country + " " + city + " .")
+                self.error_logger.error("Could not connect to " + country + " " + city + " .")
                 self.connecting = False
                 return False
+        else:
+            self.log.error("Could not connect to " + country + " " + city + " , because you were not disconnected.")
+            self.error_logger.error("Could not connect to " + country + " " + city + " ,because you were not "
+                                                                                   "disconnected.")
+            self.connecting = False
+            return False
 
     def disconnect(self):
         """Disconnects form the NordVPN Client"""
 
-        if not self.connecting:
-            self.connecting = True;
-            if self.check():
-                subprocess.check_output(['nordvpn', 'disconnect'])
-                if not self.check():
-                    self.log.info("You are disconnected")
-                    self.connecting = False
-                    return True
-                else:
-                    self.log.error("You could not disconnect")
-                    self.error_logger.error("You could not disconnect")
-                    self.connecting = False
-                    return False
-            else:
-                self.log.info("You tried to disconnect even though you are not connected to NordVPN")
-                self.connecting = False
+        self.disconnecting = True
+        if self.check():
+            subprocess.check_output(['nordvpn', 'disconnect'])
+            if not self.check():
+                self.log.info("You are disconnected")
+                self.disconnecting = False
                 return True
+            else:
+                self.log.error("You could not disconnect")
+                self.error_logger.error("You could not disconnect")
+                self.disconnecting = False
+                return False
+        else:
+            self.log.info("You tried to disconnect even though you are not connected to NordVPN")
+            self.disconnecting = False
+            return True
 
     def status(self):
         status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8').replace('\r', '').replace('-', '') \

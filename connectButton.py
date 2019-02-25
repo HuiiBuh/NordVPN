@@ -18,10 +18,12 @@ class ConnectionButton(threading.Thread):
     def get_statue_of_connection(self):
         while threading.main_thread().is_alive():
 
-            if not self.nordvpn.connecting:
+            if not self.nordvpn.connecting and not self.nordvpn.disconnecting:
                 detailed_state = self.connect.status()
                 state = self.connect.check()
                 eel.updateStatus(detailed_state, state)
-            else:
+            elif self.nordvpn.connecting:
                 eel.updateStatus("Connecting", "Connecting")
-            time.sleep(0.1)
+            elif self.nordvpn.disconnecting:
+                eel.updateStatus("Disconnecting", "Disconnecting")
+            time.sleep(1)
