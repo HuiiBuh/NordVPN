@@ -6,9 +6,10 @@ from Connect import Connect
 
 class ConnectionButton(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, nordvpn):
         threading.Thread.__init__(self)
-        self.interrupt = False
+        self.nordvpn = nordvpn
+
         self.connect = Connect()
 
     def run(self):
@@ -16,11 +17,11 @@ class ConnectionButton(threading.Thread):
 
     def get_statue_of_connection(self):
         while threading.main_thread().is_alive():
-            if not self.interrupt:
+
+            if not self.nordvpn.connecting:
                 detailed_state = self.connect.status()
                 state = self.connect.check()
                 eel.updateStatus(detailed_state, state)
-                time.sleep(1)
-                print("d")
             else:
-                pass
+                eel.updateStatus("Connecting", "Connecting")
+            time.sleep(0.1)

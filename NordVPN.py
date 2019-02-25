@@ -9,15 +9,15 @@ from connectButton import ConnectionButton
 
 eel.init('../NordVPNGUI')
 
+nordvpn = Connect()
+
 # update quickconnect button
-updateButton = ConnectionButton()
+updateButton = ConnectionButton(nordvpn)
 updateButton.start()
 
 # update the json file every 30 minutes
 updateJson = Functions()
 updateJson.start()
-
-nordvpn = Connect()
 
 
 @eel.expose
