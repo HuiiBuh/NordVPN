@@ -7,6 +7,7 @@ from Logger import Logger
 
 
 # ToDo Die cities in dem cieties dict sortieren
+# Schauen, dass countries nicht leer ist
 
 
 class Functions(threading.Thread):
