@@ -13,10 +13,13 @@ Install the package which connects the python app with the webApp
 ```pip3 install eel```
 
 Download this project and the NordVPN gui.
-
-/rootFolder
---/NordVPN
---/NordVPNGIO
+```
+.
+├── root                   
+│   ├── NordVPN
+│   ├── NordVPNGUI
+|...
+```
 
 To start the program execute the NordVPN.py file.
 ```python3.6 NordVPN.py```
