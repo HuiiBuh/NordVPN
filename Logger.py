@@ -15,7 +15,6 @@ class Logger:
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-
         handler = logging.FileHandler(log_file)
         handler.setFormatter(self.formatter)
 
