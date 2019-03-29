@@ -1,4 +1,6 @@
 import eel
+import os.path
+import time
 from shutil import which
 from Connect import Connect
 
@@ -58,6 +60,22 @@ def return_cities():
     with open("cities.json", "r") as citiy:
         return citiy.read()
 
+
+while not os.path.exists("country.json"):
+    eel.sleep(1)
+
+while not os.path.exists("cities.json"):
+    eel.sleep(1)
+
+try:
+    open("country.json", "r")
+except FileNotFoundError:
+    pass
+
+try:
+    open("cities.json", "r")
+except FileNotFoundError:
+    pass
 
 if which("chromium"):
     eel.start('server.html', options={'port': 15651})

@@ -22,7 +22,7 @@ class Functions(threading.Thread):
 
     def execute(self):
 
-        time_st_old = time.time()
+        time_st_old = time.time() - 31 * 60
         while threading.main_thread().is_alive():
             time.sleep(2)
             if time.time() - time_st_old > 30 * 60:

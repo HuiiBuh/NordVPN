@@ -10,7 +10,7 @@ class Connect:
     def __init__(self):
 
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
-        self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log", logging.ERROR, "Log")
+        self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "Log/error.log", logging.ERROR, "Log")
         self.connecting = False
         self.disconnecting = False
 
