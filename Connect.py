@@ -10,23 +10,29 @@ class Connect:
     def __init__(self):
 
         self.log = Logger.setup_logger(Logger(), "logger", "Log/log.log", logging.DEBUG, "Log")
-        self.error_logger = Logger.setup_logger(Logger(), "Log/error_logger", "Log/error.log", logging.ERROR, "Log")
+        self.error_logger = Logger.setup_logger(Logger(), "error_logger", "Log/error.log",
+                                                logging.ERROR, "Log")
         self.connecting = False
         self.disconnecting = False
 
     def check_login(self):
-        """Checks if you are connected to the NordVPN client"""
+        """
+        Checks if you are connected to the NordVPN client
+        :return: boolean
+        """
 
         login_status = subprocess.check_output(['nordvpn', 'login']).decode('UTF-8')
-        if "logged in" in self.login_status:
+        if "logged in" in login_status:
             self.log.info("You are logged in.")
-            self.on_login(True)
         else:
             self.log.info("You are not logged in.")
-            self.on_login(False)
 
-    def check(self):
-        """Used to check the connection status of the NordVPN client"""
+    @staticmethod
+    def check():
+        """
+        Used to check the connection status of the NordVPN client
+        :return: boolean
+        """
 
         connection_status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8')
         if "Connected" in connection_status:
@@ -35,9 +41,12 @@ class Connect:
             return False
 
     def quick_connect(self):
-        """Connect to the best location available"""
+        """
+        Connect to the best location available
+        :return: boolean
+        """
 
-        self.connecting = True;
+        self.connecting = True
         if self.check():
             self.disconnect()
 
@@ -59,10 +68,13 @@ class Connect:
             self.connecting = False
             return False
 
-
     def connect_to_location(self, country, city):
-        """Connects to a specific location.
-        Assign "" (empty string) to City if you want to connect only to the country"""
+        """
+        Connects to a specific location.
+        :param country: Country you want to connect to
+        :param city: City in the country "" for no city
+        :return: boolean
+        """
 
         self.connecting = True
         if self.check():
@@ -80,14 +92,18 @@ class Connect:
                 self.connecting = False
                 return False
         else:
-            self.log.error("Could not connect to " + country + " " + city + " , because you were not disconnected.")
-            self.error_logger.error("Could not connect to " + country + " " + city + " ,because you were not "
-                                                                                   "disconnected.")
+            self.log.error("Could not connect to " + country + " " +
+                           city + " , because you were not disconnected.")
+            self.error_logger.error("Could not connect to " + country + " " +
+                                    city + " ,because you were not disconnected.")
             self.connecting = False
             return False
 
     def disconnect(self):
-        """Disconnects form the NordVPN Client"""
+        """
+        Disconnects form the NordVPN Client
+        :return: boolean
+        """
 
         self.disconnecting = True
         if self.check():
@@ -106,25 +122,29 @@ class Connect:
             self.disconnecting = False
             return True
 
-    def status(self):
-        status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8').replace('\r', '').replace('-', '') \
-            .replace('  ', '').split('\n')
+    @staticmethod
+    def status():
+        """
+        Returns the status of the VPN connection
+        :return: returns an array with importations         # 0 = connection status
+                                                            # 1 = server
+                                                            # 2 = country
+                                                            # 3 = city
+                                                            # 4 = IP
+                                                            # 5 = protocol
+                                                            # 6 = revived data
+                                                            # 7 = send data
+                                                            # 8 = duration of the connection
+        """
+        status = subprocess.check_output(['nordvpn', 'status']).decode('UTF-8') \
+            .replace('\r', '').replace('-', '').replace('  ', '').split('\n')
         status = [x for x in status if x != '']
 
         return_status = []
 
-        for i in range(len(status)):
-            start = status[i].find(':') + 2
-            end = len(status[i])
-            return_status.append(status[i][start:end])
+        for counter, value in enumerate(status):
+            start = value.find(':') + 2
+            end = len(value)
+            return_status.append(value[start:end])
 
-        # 0 = connection status
-        # 1 = server
-        # 2 = country
-        # 3 = city
-        # 4 = IP
-        # 5 = protocol
-        # 6 = revived data
-        # 7 = send data
-        # 8 = duration of the connection
         return return_status
