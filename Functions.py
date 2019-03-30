@@ -6,7 +6,8 @@ import time
 from Logger import Logger
 
 
-# Schauen, dass countries nicht leer ist
+# ToDO {"transportisclosing": ["transportisclosing"]} in cities
+# ToDo check if really all the cities are in the list
 
 
 class Functions(threading.Thread):
