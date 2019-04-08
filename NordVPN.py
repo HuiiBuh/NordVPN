@@ -97,6 +97,14 @@ def return_cities():
     with open("cities.json", "r") as citiy:
         return citiy.read()
 
+@eel.expose
+def return_login_status():
+    """
+    Gets the login status and returns it
+    :return: boolean
+    """
+    return NORDVPN.check_login()
+
 
 while not os.path.exists("country.json"):
     eel.sleep(1)
