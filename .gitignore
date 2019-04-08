@@ -5,3 +5,5 @@ Log
 error.log
 cities.json
 country.json
+*.log
+
