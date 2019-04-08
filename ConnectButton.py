@@ -1,11 +1,15 @@
-import eel
 import threading
 import time
+
+import eel
+
 from Connect import Connect
 
 
 class ConnectionButton(threading.Thread):
-
+    """
+    Calls the connectButton of the GUI every second to update the message
+    """
     def __init__(self, nordvpn):
         threading.Thread.__init__(self)
         self.nordvpn = nordvpn
@@ -13,9 +17,13 @@ class ConnectionButton(threading.Thread):
         self.connect = Connect()
 
     def run(self):
-        self.get_statue_of_connection()
+        self.set_statue_of_connection_gui()
 
-    def get_statue_of_connection(self):
+    def set_statue_of_connection_gui(self):
+        """
+        Call method of the connectbutton in js to update the connectbutton
+        :return: None
+        """
         while threading.main_thread().is_alive():
 
             if not self.nordvpn.connecting and not self.nordvpn.disconnecting:

@@ -2,4 +2,8 @@
 .idea
 __pycache__/
 Log
+error.log
+cities.json
+country.json
 *.log
+

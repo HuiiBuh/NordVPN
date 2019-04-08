@@ -22,4 +22,4 @@ Download this project and the NordVPN gui.
 ```
 
 To start the program execute the NordVPN.py file.
-```python3.6 NordVPN.py```
+```python3.6 NordVPN.py``
