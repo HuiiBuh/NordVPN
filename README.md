@@ -1,6 +1,6 @@
 # NordVPN
 
-This is the backend of a [NordVPN webApp](https://github.com/HuiiBuh/NordVPNGUI). 
+This is the backend of a [NordVPN WebApp](https://github.com/HuiiBuh/NordVPNGUI). 
 
 
 ### Installation Instructions
