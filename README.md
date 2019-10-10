@@ -1,4 +1,4 @@
-# NordVPN
+# NordVPN - Not Working
 
 This is the backend of a [NordVPN WebApp](https://github.com/HuiiBuh/NordVPNGUI). 
 
